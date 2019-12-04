@@ -13,10 +13,21 @@ def addition():
         print("correct")
 
 def subtraction():
-    return
+    integer1 = random.randint(0, 10)
+    integer2 = random.randint(0, 10)
+    print(integer1, "-", integer2)
+    answer = input(" - ")
+    if answer == integer1 - integer2:
+        print("correct")
+
 
 def multiplication():
-    return
+    integer1 = random.randint(0, 10)
+    integer2 = random.randint(0, 10)
+    print(integer1, "*", integer2)
+    answer = input(" - ")
+    if answer == integer1 * integer2:
+        print("correct")
 
 def division():
     return
