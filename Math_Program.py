@@ -19,6 +19,17 @@ def question(symbol):
     if submited == str(answer):
         print("correct")
 
+def question_hard(symbol1,symbol2):
+    integer1 = random.randint(0, 10)
+    integer2 = random.randint(0, 10)
+    integer3 = random.randint(0, 10)
+    if symbol1=="/":
+        if symbol2=="/":
+            print("(",integer1*integer2*integer3, symbol1, integer2,")", symbol2, integer3)
+            answer=integer1
+        else:
+            print("(",integer1*integer2, symbol1, integer2,")", symbol2, integer3)
+            answer=eval("("+str(integer1*integer2)+symbol1+str(integer2)+")"+symbol2+str(integer3))
 def easy():
     question(random.choice(easy_))
     
