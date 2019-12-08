@@ -1,6 +1,9 @@
 from tkinter import *
 import tkinter
+from tkinter.ttk import Progressbar
 import random
+import time
+import math
 
 window = Tk()
 window.title("Math Tutor")
@@ -15,30 +18,45 @@ question.grid(column=1,row=2)
 answer_submitted = Entry(window, width=5)
 answer_submitted.grid(column=1,row=3)
 
-result = Label(window, text="")
+time_taken = StringVar("")
+time_measure = Label(window, textvariable=time_taken)
+time_measure.grid(column=0,row=3)
+
+correct = StringVar("")
+result = Label(window, textvariable=correct)
 result.grid(column=2,row=3)
+
+progress_bar = Progressbar(window, length=200)
+progress_bar.grid(column=1,row=4)
 
 easy_choices=["+","-"]
 medium_choices=["+","-","*","/"]
 answer=None
 question_asked=None
+time_start=None
+question_weights={"easy_question()":"1","medium_question()":"3","hard_question()":"20"}
 
 def check(null_arg):
     global answer
     global question_asked
+    global time_start
+    if time_start!=None:
+        time_taken.set((str(int(time.time()-time_start)),"s"))
     if answer!=None:
         if str(answer)==answer_submitted.get():
-            result = Label(window, text="✓")
-            result.grid(column=2,row=3)
+            correct.set("✓")
+            if question_asked!=None:
+                progress_bar["value"]+=math.ceil(int(question_weights[question_asked])/int(eval(time_taken.get())[0]))
         else:
-            result = Label(window, text="X")
-            result.grid(column=2,row=3)
+            correct.set("X")
+    answer_submitted.delete(0,END)
     if question_asked!=None:
         exec(question_asked)
-    answer_submitted.delete(0,END)
-    
+
 def question(symbol):
     global answer
+    global time_start
+    time_start=time.time()
     integer1 = random.randint(0, 10)
     integer2 = random.randint(0, 10)
     if symbol=="/":
@@ -52,9 +70,11 @@ def question(symbol):
 
 def question_hard(symbol1,symbol2):
     global answer
+    global time_start
     integer1 = random.randint(0, 10)
     integer2 = random.randint(0, 10)
     integer3 = random.randint(0, 10)
+    time_start=time.time()
     if symbol1=="/":
         if symbol2=="/":
             if integer2 == 0:
