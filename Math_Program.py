@@ -1,6 +1,67 @@
 from tkinter import *
 import tkinter
 import random
+import sqlite3
+from sqlite3 import Error
+
+store_filename = r"scores.db"
+
+username = open("username.txt").readline()
+print(username)
+
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+
+    return conn
+
+def create_table(conn, cmd):
+    try:
+        c = conn.cursor()
+        c.execute(cmd)
+    except Error as e:
+        print(e)
+
+def update_entry(conn, score):
+    cmd = """REPLACE INTO scores
+    (name, score)
+VALUES
+    (?, ?);"""
+    curs = conn.cursor()
+    curs.execute(cmd, (username, score))
+    conn.commit()
+
+def get_score(conn):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM scores")
+ 
+    row = cur.fetchone()
+ 
+    if row == None:
+        update_entry(conn, 0)
+        return 0
+    return row[1]
+ 
+conn = create_connection(store_filename)
+
+sql_create_table_cmd = """CREATE TABLE IF NOT EXISTS scores (
+                                    name text NOT NULL PRIMARY KEY,
+                                    score integer
+                                );"""
+
+if conn is not None:
+    create_table(conn, sql_create_table_cmd)
+else:
+    print("Database could not accessed. Exiting")
+    exit()
+
+score = get_score(conn)
+risk = 1
 
 window = Tk()
 window.title("Math Tutor")
@@ -30,12 +91,15 @@ def check(null_arg):
         if str(answer)==answer_submitted.get():
             result = Label(window, text="✓")
             result.grid(column=2,row=3)
+            score+=risk
         else:
             result = Label(window, text="X")
             result.grid(column=2,row=3)
+            score-=risk
     if question_asked!=None:
         exec(question_asked)
     answer_submitted.delete(0,END)
+    update_entry(conn, score)
     
 def question(symbol):
     global answer
@@ -80,16 +144,22 @@ def question_hard(symbol1,symbol2):
 
 def easy_question():
     global question_asked
+    global risk
+    risk = 1
     question_asked="easy_question()"
     question(random.choice(easy_choices))
     
 def medium_question():
     global question_asked
+    global risk
+    risk = 3
     question_asked="medium_question()"
     question(random.choice(medium_choices))
     
 def hard_question():
     global question_asked
+    global risk
+    risk = 5
     question_asked="hard_question()"
     question_hard(random.choice(medium_choices),random.choice(medium_choices))
 
