@@ -160,16 +160,16 @@ def question_hard(symbol1,symbol2):
             if integer2 == 0:
                 integer2 = random.randint(1, 10)
             question_text.set(("(",integer1*integer2, symbol1, integer2,")", symbol2, integer3))
-            answer=eval("("+str(integer1*integer2)+symbol1+str(integer2)+")"+symbol2+str(integer3))
+            answer=eval(str(integer1)+symbol2+str(integer3))
     else:
         if symbol2=="/":
             if integer3 == 0:
                 integer3 = random.randint(1, 10)
             question_text.set(("(",integer1*integer3, symbol1, integer2*integer3,")", symbol2, integer3))
-            answer=eval("("+str(integer1*integer3)+symbol1+str(integer2*integer3)+")"+symbol2+str(integer3))
+            answer=int(eval("("+str(integer1*integer3)+symbol1+str(integer2*integer3)+")"+symbol2+str(integer3)))
         else:
             question_text.set(("(",integer1, symbol1, integer2,")", symbol2, integer3))
-            answer=eval("("+str(integer1)+symbol1+str(integer2)+")"+symbol2+str(integer3))
+            answer=int(eval("("+str(integer1)+symbol1+str(integer2)+")"+symbol2+str(integer3)))
 
 def easy_question():
     global question_asked
