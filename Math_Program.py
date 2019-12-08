@@ -30,14 +30,24 @@ def question_hard(symbol1,symbol2):
         else:
             print("(",integer1*integer2, symbol1, integer2,")", symbol2, integer3)
             answer=eval("("+str(integer1*integer2)+symbol1+str(integer2)+")"+symbol2+str(integer3))
+    else:
+        if symbol2=="/":
+            print("(",integer1*integer3, symbol1, integer2*integer3,")", symbol2, integer3)
+            answer=eval("("+str(integer1*integer3)+symbol1+str(integer2*integer3)+")"+symbol2+str(integer3))
+        else:
+            print("(",integer1, symbol1, integer2,")", symbol2, integer3)
+            answer=eval("("+str(integer1)+symbol1+str(integer2)+")"+symbol2+str(integer3))
+    submited = input(" - ")
+    if submited == str(answer):
+        print("correct")
 def easy():
-    question(random.choice(easy_))
+    question(random.choice(easy_choices))
     
 def medium():
-    question(random.choice(medium_))
+    question(random.choice(medium_choices))
     
 def hard():
-    option1=random.choice(medium)
-    option2=random.choice(medium)
+    question_hard(random.choice(medium_choices),random.choice(medium_choices))
+
     
 
