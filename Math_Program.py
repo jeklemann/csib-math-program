@@ -97,10 +97,11 @@ scorelabel.grid(column=1, row=5)
 
 easy_choices=["+","-"]
 medium_choices=["+","-","*","/","|"]
+estimation_choices=["√","/"]
 answer=None
 question_asked=None
 time_start=None
-question_weights={"easy_question()":"1","medium_question()":"3","hard_question()":"20"}
+question_weights={"easy_question()":"1","medium_question()":"3","hard_question()":"20","estimation_question()":"10"}
 
 def check(null_arg):
     global answer
@@ -176,6 +177,20 @@ def question_hard(symbol1,symbol2):
             question_text.set(("(",integer1, symbol1, integer2,")", symbol2, integer3))
             answer=int(eval("("+str(integer1)+symbol1+str(integer2)+")"+symbol2+str(integer3)))
 
+def question_estimation(symbol):
+    global answer
+    global time_start
+    time_start=time.time()
+    if symbol == "√":
+        integer = random.randint(1,10)
+        question_text.set(("√",integer))
+        answer=int(math.sqrt(integer))
+    if symbol == "/":
+        integer1 = random.randint(0,100)
+        integer2 = random.randint(1,10)
+        question_text.set((integer1,"/",integer2))
+        answer=round(integer1/integer2)
+
 def easy_question():
     global question_asked
     global risk
@@ -196,10 +211,18 @@ def hard_question():
     risk = 5
     question_asked="hard_question()"
     question_hard(random.choice(medium_choices),random.choice(medium_choices))
+def estimation_question():
+    global question_asked
+    global risk
+    risk = 5
+    question_asked="estimation_question()"
+    question_estimation(random.choice(estimation_choices))
 
 easy = Button(window, text="Easy", command=easy_question)
 medium = Button(window, text="Medium", command=medium_question)
 hard = Button(window, text="Hard", command=hard_question)
+estimation = Button(window, text="Estimations", command=estimation_question)
+estimation.grid(column=3,row=1)
 easy.grid(column=0,row=1)
 medium.grid(column=1,row=1)
 hard.grid(column=2,row=1)
