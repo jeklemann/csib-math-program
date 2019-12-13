@@ -147,7 +147,6 @@ def question(symbol):
     else:
         question_text.set((integer1, symbol, integer2))
         answer=eval(str(integer1)+symbol+str(integer2))
-    
 
 def question_hard(symbol1,symbol2):
     global answer
@@ -217,7 +216,7 @@ def question_other(symbol):
         integer3=random.randint(1,100)
         mean_list=[integer1,integer2,integer3]
         mean_list.sort()
-        answer=int(integer1+integer2+integer3)/3
+        answer=int(integer1+integer2+integer3/3)
         question_text.set(("mean : "+str(mean_list)[1:-1]))
     if symbol=="mode":
         integer1=random.randint(51,100)
@@ -234,14 +233,12 @@ def easy_question():
     risk = 1
     question_asked="easy_question()"
     question(random.choice(easy_choices))
-    
 def medium_question():
     global question_asked
     global risk
     risk = 3
     question_asked="medium_question()"
     question(random.choice(medium_choices))
-    
 def hard_question():
     global question_asked
     global risk
