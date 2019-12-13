@@ -139,7 +139,7 @@ def question(symbol):
             integer2 = random.randint(1, 10)
         question_text.set((integer1*integer2, symbol, integer2))
         answer=integer1
-    if symbol=="|":
+    elif symbol=="|":
         abs_integer = random.randint(-30, 30)
         question_text.set((symbol, abs_integer, symbol))
         answer=abs(abs_integer)
