@@ -97,6 +97,7 @@ scorelabel.grid(column=2, row=5)
 
 easy_choices=["+","-"]
 medium_choices=["+","-","*","/","|"]
+hard_choices=["+","-","*","/"]
 estimation_choices=["√","/"]
 other_choices=["!","median","mean","mode"]
 answer=None
@@ -246,7 +247,7 @@ def hard_question():
     global risk
     risk = 5
     question_asked="hard_question()"
-    question_hard(random.choice(medium_choices),random.choice(medium_choices))
+    question_hard(random.choice(hard_choices),random.choice(hard_choices))
 def estimation_question():
     global question_asked
     global risk
