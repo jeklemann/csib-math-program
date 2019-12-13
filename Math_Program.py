@@ -96,7 +96,7 @@ scorelabel = Label(window, textvariable=scoreval)
 scorelabel.grid(column=2, row=5)
 
 easy_choices=["+","-"]
-medium_choices=["+","-","*","/"]
+medium_choices=["+","-","*","/","|"]
 estimation_choices=["√","/"]
 other_choices=["!","median","mean","mode"]
 answer=None
@@ -139,9 +139,14 @@ def question(symbol):
             integer2 = random.randint(1, 10)
         question_text.set((integer1*integer2, symbol, integer2))
         answer=integer1
+    if symbol=="|":
+        abs_integer = random.randint(-30, 30)
+        question_text.set((symbol, abs_integer, symbol))
+        answer=abs(abs_integer)
     else:
         question_text.set((integer1, symbol, integer2))
         answer=eval(str(integer1)+symbol+str(integer2))
+    
 
 def question_hard(symbol1,symbol2):
     global answer
