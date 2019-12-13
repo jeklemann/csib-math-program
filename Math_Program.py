@@ -70,38 +70,39 @@ window = Tk()
 window.title("Math Tutor")
 
 Title = Label(window, text="Math Tutor")
-Title.grid(column=1,row=0)
+Title.grid(column=2,row=0)
 
 question_text = StringVar("")
 question = Label(window, textvariable=question_text)
-question.grid(column=1,row=2)
+question.grid(column=2,row=2)
 
 answer_submitted = Entry(window, width=5)
-answer_submitted.grid(column=1,row=3)
+answer_submitted.grid(column=2,row=3)
 
 time_taken = StringVar("")
 time_measure = Label(window, textvariable=time_taken)
-time_measure.grid(column=0,row=3)
+time_measure.grid(column=1,row=3)
 
 correct = StringVar("")
 result = Label(window, textvariable=correct)
-result.grid(column=2,row=3)
+result.grid(column=3,row=3)
 
 progress_bar = Progressbar(window, length=200)
-progress_bar.grid(column=1,row=4)
+progress_bar.grid(column=2,row=4)
 
 scoreval = IntVar()
 scoreval.set(score)
 scorelabel = Label(window, textvariable=scoreval)
-scorelabel.grid(column=1, row=5)
+scorelabel.grid(column=2, row=5)
 
 easy_choices=["+","-"]
 medium_choices=["+","-","*","/"]
 estimation_choices=["√","/"]
+other_choices=["!","median","mean","mode"]
 answer=None
 question_asked=None
 time_start=None
-question_weights={"easy_question()":"1","medium_question()":"3","hard_question()":"20","estimation_question()":"10"}
+question_weights={"easy_question()":"1","medium_question()":"3","hard_question()":"20","estimation_question()":"10","other_question()":"15"}
 
 def check(null_arg):
     global answer
@@ -186,6 +187,41 @@ def question_estimation(symbol):
         question_text.set((integer1,"/",integer2))
         answer=round(integer1/integer2)
 
+def question_other(symbol):
+    global answer
+    global time_start
+    time_start=time.time()
+    if symbol=="!":
+        integer=random.randint(1,5)
+        question_text.set((integer,"!"))
+        answer=math.factorial(int(integer))
+    if symbol=="median":
+        interger1=random.randint(1,100)
+        interger2=random.randint(1,100)
+        interger3=random.randint(1,100)
+        interger4=random.randint(1,100)
+        interger5=random.randint(1,100)
+        median_list=[interger1,interger2,interger3,interger4,interger5]
+        median_list.sort()
+        answer=median_list[2]
+        question_text.set(("median : "+str(median_list)[1:-1]))
+    if symbol=="mean":
+        integer1=random.randint(1,100)
+        integer2=random.randint(1,100)
+        integer3=random.randint(1,100)
+        mean_list=[integer1,integer2,integer3]
+        mean_list.sort()
+        answer=int(integer1+integer2+integer3)/3
+        question_text.set(("mean : "+str(mean_list)[1:-1]))
+    if symbol=="mode":
+        integer1=random.randint(51,100)
+        integer2=random.randint(1,50)
+        integer3=random.randint(1,100)
+        mode_list=[integer1,integer2,integer3,integer3]
+        mode_list.sort()
+        answer=integer3
+        question_text.set(("mode : "+str(mode_list)[1:-1]))
+
 def easy_question():
     global question_asked
     global risk
@@ -212,14 +248,22 @@ def estimation_question():
     risk = 5
     question_asked="estimation_question()"
     question_estimation(random.choice(estimation_choices))
+def other_question():
+    global question_asked
+    global risk
+    risk = 5
+    question_asked="other_question()"
+    question_other(random.choice(other_choices))
 
 easy = Button(window, text="Easy", command=easy_question)
 medium = Button(window, text="Medium", command=medium_question)
 hard = Button(window, text="Hard", command=hard_question)
 estimation = Button(window, text="Estimations", command=estimation_question)
-estimation.grid(column=3,row=1)
-easy.grid(column=0,row=1)
-medium.grid(column=1,row=1)
-hard.grid(column=2,row=1)
+other = Button(window, text="Other", command=other_question)
+estimation.grid(column=0,row=1)
+easy.grid(column=1,row=1)
+medium.grid(column=2,row=1)
+hard.grid(column=3,row=1)
+other.grid(column=4, row=1)
 
 window.bind('<Return>', check)
